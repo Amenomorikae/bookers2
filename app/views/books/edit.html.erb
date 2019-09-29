@@ -1,0 +1,30 @@
+<div class="container">
+	<p id="notice"></p>
+	<div class="row">
+		<% if @book.errors.any? %>
+            <div class="alert alert-danger">
+              <ul>
+                  <%= pluralize(@book.errors.count, "error") %>
+                  <% @book.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                  <% end %>
+                </ul>
+            </div>
+       <% end %>
+	  <div class="col-md-5">
+		<h1>Editing Book</h1>
+		<div>
+		  <%= form_for(@book) do |f| %>
+		    <h2>Title</h2>
+		    <p><%= f.text_field :title %></p>
+		    <h2>Opinion</h2>
+		    <p><%= f.text_area :body %></p>
+		    <%= f.submit 'Update Book'%>
+		  <% end %>
+
+		  <td><%= link_to "Show", users_path %></td>
+		  <td><%= link_to "Back", books_path %></td>
+
+		</div>
+	</div>
+</div>

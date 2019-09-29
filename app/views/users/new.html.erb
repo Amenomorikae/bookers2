@@ -1,0 +1,28 @@
+<div>
+  <h1>User info</h1>
+  <%= attachment_image_tag @user, :profile_image, :fill, 60, 60, class: "img-circle pull-left profile-thumb", fallback: "no_image.jpg"%>
+  <%= @user.name %>
+  <%= @user.introduction %>
+  <%= link_to "edit",edit_user_path %>
+</div>
+<%= render 'books/list', book: @book %>
+<div>
+	<h1>Users</h1>
+	<table>
+	  <thead>
+	  	<tr>
+	  		<th>image</th>
+	  		<th>name</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	  	  <% @users.each do |u| %>
+	  	   <tr>
+	  		<td><%= u.title %></td>
+	  		<td><%= u.body %></td>
+	  		<td><%= link_to "Show",users_path(user.id) %></td>
+	  	   </tr>
+	  	  <% end %>
+	  </tbody>
+	</table>
+</div>

@@ -1,0 +1,33 @@
+<div class="container">
+  <p id="notice"></p>
+  <div class="row">
+    <div class="col-md-5">
+      <% if @user.errors.any? %>
+            <div class="alert alert-danger">
+              <ul>
+                  <%= pluralize(@user.errors.count, "error") %>
+                  <% @user.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                  <% end %>
+                </ul>
+            </div>
+       <% end %>
+      <h1>User info</h1>
+      <div>
+        <%= form_for(@user) do |f| %>
+      	<h4>Name</h4>
+      	<p><%= f.text_field :name %></p>
+      	<h4>Image</h4>
+      	<p><%= f.attachment_field :profile_image %></p>
+      	<h4>Introduction</h4>
+      	<p><%= f.text_area :introduction %></p>
+        <%= f.submit 'Update User' %>
+        <% end %>
+
+      	<td><%= link_to "Show", users_path %></td>
+      	<td><%= link_to "Back", books_path %></td>
+
+      </div>
+    </div>
+  </div>
+</div>
