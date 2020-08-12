@@ -1,25 +1,13 @@
 <div class="container">
   <p id="notice"></p>
   <div class="row">
-      <div class="col-4">
-        <h1>User info</h1>
-        <%= attachment_image_tag @user, :profile_image, :fill, 100, 100, format: 'jpeg',fallback: "no_image.jpg" %>
-        <table class="table">
-            <tr>
-              <th>name</th>
-              <td><%= @user.name %></td>
-            </tr>
-            <tr>
-              <th>introduction</th>
-              <td><%= @user.introduction %></td>
-            </tr>
-        </table>
-            <div class="row">
-                <%= link_to "", edit_user_path(@user), class: "fa fa-wrench btn btn-light col-12" %>
-            </div>
-            <%= render 'books/list', book: @book %>
+      <div class="col-lg-4 col-xs-12">
+           <%= render 'users/info', user: @user %>
+          <% if @user == current_user %>
+           <%= render 'books/list', book: @book %>
+          <% end %>
       </div>
-        <div class="col-8">
+        <div class="col-lg-8 col-xs-12">
           <h1>Books</h1>
                 <table class="table table-striped">
                 <thead>
@@ -27,6 +15,7 @@
                     <th></th>
                     <th>Title</th>
                     <th>Opinion</th>
+                    <th></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -36,6 +25,7 @@
                       <td><%= attachment_image_tag @user, :profile_image, :fill, 60, 60, format: 'jpeg' %></td>
                       <td><%= link_to book.title,book_path(book) %></td>
                       <td><%= book.body %></td>
+                      <td>コメント数：<%= book.book_comments.count %></td>
                      </tr>
                     <% end %>
                 </tbody>

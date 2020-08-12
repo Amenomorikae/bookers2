@@ -1,36 +1,15 @@
 <div class="container">
   <p id="notice"></p>
-    <% if flash[:notice] %>
-      <div class="flash">
-        <%= flash[:notice]%>
-      </div>
-    <% end %>
+    <% flash[:notice] %>
   <div class="row">
-    <div class="col-4">
-      <h1>User info</h1>
-       <%= attachment_image_tag @user, :profile_image, :fill, 100, 100, format: 'jpeg',fallback: "no_image.jpg" %>
-        <table class="table">
-            <tr>
-              <th>name</th>
-              <td><%= @user.name %></td>
-            </tr>
-            <tr>
-              <th>introduction</th>
-              <td><%= @user.introduction %></td>
-            </tr>
-        </table>
-            <div class="row">
-                <%= link_to "", edit_user_path(@user), class: "fa fa-wrench btn btn-light col-12" %>
-            </div>
-            <%= render 'books/list', book: @book %>
+    <div class="col-lg-4 col-xs-12">
+            <%= render 'users/info', user: @user %>
     </div>
-    <div class="col-8">
+    <div class="col-lg-8 col-xs-12">
         <h1>Book detail</h1>
         <table class="table table-hover table-inverse">
           <thead>
             <tr>
-              <th></th>
-              <th>Name</th>
               <th>title</th>
               <th>opinion</th>
               <th></th>
@@ -39,19 +18,51 @@
           </thead>
           <tbody>
                <tr>
-                <td><%= attachment_image_tag @book.user, :profile_image, :fill, 60, 60, fallback: "no_image.jpg"%></td>
-                <td><%= link_to @book.user.name, user_path(@book.user) %></td>
                 <td><%= @book.title %></td>
                 <td><%= @book.body %></td>
+                <td><% if @book.favorited_by?(current_user) %>
+                      <%= link_to book_favorites_path(@book, redirect_id: 0), method: :delete, remote: true do %>
+                        <%#= fa_icon "heart", text: "#{book.favorites.count}", style: "color: red;" %>
+                        <span class="fas fa-heart like-btn"><%= @book.favorites.count%></span>
+                      <% end %>
+                    <% else %>
+                      <%= link_to book_favorites_path(@book, redirect_id: 0), method: :post, remote: true do %>
+                        <%#= fa_icon "heart-o", text: "#{book.favorites.count}", style: "color: red;" %>
+                        <span class="far fa-heart unlike-btn"><%= @book.favorites.count %></span>
+                      <% end %>
+                    <% end %>
+                </td>
+                <td>コメント数：<%= @book.book_comments.count %></td>
                 <% if @book.user == current_user%>
-                  <td><button type="button" class="btn btn-success"><%= link_to "Edit", edit_book_path(@book)%>
+                  <td><button type="button" class="btn btn-success"><%= link_to "Edit", edit_book_path(@book), class: "editbtn"%>
                     </button></td>
-                  </td>
-                  <td><button type="button" class="btn btn-danger"><%= link_to "Destroy", book_path(@book), method: :delete %></button></td>
+                  <td><button type="button" class="btn btn-danger"><%= link_to "Destroy", book_path(@book), method: :delete, class: "destroybtn" %></button></td>
                 <% end %>
               </tr>
           </tbody>
         </table>
+        <table class="show-tb">
+        <% @book_comments.each do |book_comment| %> <!-- コメント一覧 -->
+          <tr>
+            <td>
+              <%= link_to user_path(book_comment.user), class: "user_#{book_comment.user.id}" do %>
+                <%= attachment_image_tag book_comment.user, :profile_image, :fill, 50, 50, fallback: "no_image.jpg", size: "50x50" %><br>
+                <%= book_comment.user.name %>
+              <% end %>
+            </td>
+            <td><%= book_comment.comment %></td>
+            <% unless current_user != book_comment.user %>
+              <td><%= link_to 'Destroy', book_book_comments_path(book_comment.id), class: 'btn-sm btn-danger', method: :delete %></td>
+            <% end %>
+          </tr>
+        <% end %>
+      </table>
+      <div class="comment-form">
+        <%= form_for [@book, @book_comment] do |f| %>
+          <%= f.text_area :comment, size: "90x5", placeholder: "Write comment" %>
+          <%= f.submit '送信', class: "btn btn-dark" %>
+        <% end %>
+      </div>
     </div>
   </div>
 </div>

@@ -1,27 +1,7 @@
 <div class="container">
   <p id="notice"></p>
   <div class="row">
-      <div class="col-md-4">
-        <h1>User info</h1>
-        <% if user_signed_in? %>
-          <%= attachment_image_tag @user, :profile_image, :fill, 100, 100, format: 'jpeg', fallback: "no_image.jpg"%>
-          <table class="table">
-            <tr>
-              <th>name</th>
-              <td><%= @user.name %></td>
-            </tr>
-            <tr>
-              <th>introduction</th>
-              <td><%= @user.introduction %></td>
-            </tr>
-          </table>
-          <div class="row">
-                <%= link_to "", edit_user_path(@user), class: "fa fa-wrench btn btn-light col-12" %>
-          </div>
-        <% end %>
-        <%= render 'books/list', book: @book %>
-      </div>
-      <div class="col-md-8">
+      <div class="col-md-12">
         <h1>Users</h1>
         <table class="table table-hover table-inverse">
           <thead>
